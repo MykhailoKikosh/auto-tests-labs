@@ -26,7 +26,6 @@ describe('Mtrx Library base functionality test', () => {
     });
 
     it('Should add two matrices', () => {
-        // const result = matrix1.add(matrix2);
         const result = Mtrx.add(matrix1, matrix2);
         expect(result).to.deep.equal([ [ 2, 4, 6 ], [ 8, 10, 12 ], [ 14, 16, 18 ] ]);
     });
