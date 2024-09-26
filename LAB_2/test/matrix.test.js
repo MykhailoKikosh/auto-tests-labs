@@ -38,4 +38,17 @@ describe('Matrix Operations check', () => {
         const result = matrixA.mul(matrixB);
         expect(result.data).to.deep.equal([[58, 74, 90], [48, 63, 78], [87, 105, 123]]);
     });
+
+    it('Should divide two matrices correctly', () => {
+        const matrixA = new Matrix([
+            [2, 4],
+            [3, 8]
+        ]);
+        const matrixB = new Matrix([
+            [1, 2],
+            [3, 4]
+        ]);
+        const result = matrixA.div(matrixB);
+        expect(result.data).to.deep.equal([[2, 0], [6, -1]]);
+    });
 });
