@@ -1,0 +1,21 @@
+{
+  "name": "lab_6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "test": "__tests__/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "supertest": "^7.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
