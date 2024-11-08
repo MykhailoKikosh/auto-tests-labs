@@ -1,0 +1,897 @@
+{
+	"info": {
+		"_postman_id": "bfe27b11-fa3d-4b90-b9e0-56502fe6a12d",
+		"name": "Go REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39365484"
+	},
+	"item": [
+		{
+			"name": "REST",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "POST Create User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST CREATE USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"POST CREATE USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+											"    responseJSON.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"POST CREATE USER: Response values have appropriate data types\", function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseJSON.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"POST CREATE USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json();\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"})\r",
+											"\r",
+											"let responseData = pm.response.json();\r",
+											"pm.environment.set(\"newUserId\", responseData.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{vault:go-rest-api:token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{newUserName}}\",\r\n    \"email\": \"{{newUserEmail}}\",\r\n    \"gender\": \"{{newUserGender}}\",\r\n    \"status\": \"{{newUserStatus}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_REST_URL}}/users",
+									"host": [
+										"{{API_REST_URL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"GET USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+											"    responseJSON.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"GET USER: Response values have appropriate data types\", function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseJSON.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"POST CREATE USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json();\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{vault:go-rest-api:token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_REST_URL}}/users/{{newUserId}}",
+									"host": [
+										"{{API_REST_URL}}"
+									],
+									"path": [
+										"users",
+										"{{newUserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"UPDATE USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"UPDATE USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+											"    responseJSON.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"UPDATE USER: Response values have appropriate data types\", function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseJSON.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseJSON.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"POST CREATE USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json();\r",
+											"    pm.expect(user.name).to.not.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"updatedUserName\"));\r",
+											"    pm.expect(user.email).to.not.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"updatedUserEmail\"));\r",
+											"    pm.expect(user.gender).to.not.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"updatedUserGender\"));\r",
+											"    pm.expect(user.status).to.not.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"updatedUserStatus\"));\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{updatedUserName}}\",\r\n    \"email\": \"{{updatedUserEmail}}\",\r\n    \"gender\": \"{{updatedUserGender}}\",\r\n    \"status\": \"{{updatedUserStatus}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_REST_URL}}/users/{{newUserId}}",
+									"host": [
+										"{{API_REST_URL}}"
+									],
+									"path": [
+										"users",
+										"{{newUserId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Delete User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST CREATE USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(204);\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API_REST_URL}}/users/{{newUserId}}",
+									"host": [
+										"{{API_REST_URL}}"
+									],
+									"path": [
+										"users",
+										"{{newUserId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GET USERS: Status OK and response content is JSON\"), function() {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET USERS: Response body contain proper data\"), function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+									"    responseJSON.forEach((user) => {\r",
+									"        pm.expect(user).to.be.an(\"object\");\r",
+									"        pm.expect(user).to.have.property(\"id\");\r",
+									"        pm.expect(user).to.have.property(\"name\");\r",
+									"        pm.expect(user).to.have.property(\"email\");\r",
+									"        pm.expect(user).to.have.property(\"gender\");\r",
+									"        pm.expect(user).to.have.property(\"status\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET USERS: Response values have appropriate data types\", function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    responseJSON.forEach((user) => {\r",
+									"        pm.expect(user.id).to.be.a(\"number\");\r",
+									"        pm.expect(user.name).to.be.a(\"string\");\r",
+									"        pm.expect(user.email).to.be.a(\"string\");\r",
+									"        pm.expect(user.gender).to.be.a(\"string\");\r",
+									"        pm.expect(user.status).to.be.a(\"string\");\r",
+									"    });\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:go-rest-api:token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_REST_URL}}/users",
+							"host": [
+								"{{API_REST_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GET POSTS: Status OK and response content is JSON\"), function() {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET POSTS: Response body contain proper data\"), function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+									"    responseJSON.forEach((post) => {\r",
+									"        pm.expect(post).to.be.an(\"object\");\r",
+									"        pm.expect(post).to.have.property(\"id\");\r",
+									"        pm.expect(post).to.have.property(\"user_id\");\r",
+									"        pm.expect(post).to.have.property(\"title\");\r",
+									"        pm.expect(post).to.have.property(\"body\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET POSTS: Response values have appropriate data types\", function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    responseJSON.forEach((post) => {\r",
+									"        pm.expect(post.id).to.be.a(\"number\");\r",
+									"        pm.expect(post.user_id).to.be.a(\"number\");\r",
+									"        pm.expect(post.title).to.be.a(\"string\");\r",
+									"        pm.expect(post.body).to.be.a(\"string\");\r",
+									"    });\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:go-rest-api:token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_REST_URL}}/posts",
+							"host": [
+								"{{API_REST_URL}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GET COMMENTS: Status OK and response content is JSON\"), function() {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET COMMENTS: Response body contain proper data\"), function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+									"    responseJSON.forEach((comment) => {\r",
+									"        pm.expect(comment).to.be.an(\"object\");\r",
+									"        pm.expect(comment).to.have.property(\"id\");\r",
+									"        pm.expect(comment).to.have.property(\"post_id\");\r",
+									"        pm.expect(comment).to.have.property(\"name\");\r",
+									"        pm.expect(comment).to.have.property(\"email\");\r",
+									"        pm.expect(comment).to.have.property(\"body\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET COMMENTS: Response values have appropriate data types\", function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    responseJSON.forEach((comment) => {\r",
+									"        pm.expect(comment.id).to.be.a(\"number\");\r",
+									"        pm.expect(comment.post_id).to.be.a(\"number\");\r",
+									"        pm.expect(comment.name).to.be.a(\"string\");\r",
+									"        pm.expect(comment.email).to.be.a(\"string\");\r",
+									"        pm.expect(comment.body).to.be.a(\"string\");\r",
+									"    });\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:go-rest-api:token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_REST_URL}}/comments",
+							"host": [
+								"{{API_REST_URL}}"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get TODOs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"GET TODOs: Status OK and response content is JSON\"), function() {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET TODOs: Response body contain proper data\"), function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON).to.be.an(\"array\");\r",
+									"    responseJSON.forEach((todo) => {\r",
+									"        pm.expect(todo).to.be.an(\"object\");\r",
+									"        pm.expect(todo).to.have.property(\"id\");\r",
+									"        pm.expect(todo).to.have.property(\"user_id\");\r",
+									"        pm.expect(todo).to.have.property(\"title\");\r",
+									"        pm.expect(todo).to.have.property(\"due_on\");\r",
+									"        pm.expect(todo).to.have.property(\"status\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"GET TODOs: Response values have appropriate data types\", function() {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    responseJSON.forEach((todo) => {\r",
+									"        pm.expect(todo.id).to.be.a(\"number\");\r",
+									"        pm.expect(todo.user_id).to.be.a(\"number\");\r",
+									"        pm.expect(todo.title).to.be.a(\"string\");\r",
+									"        pm.expect(todo.due_on).to.be.a(\"string\");\r",
+									"        pm.expect(todo.status).to.be.a(\"string\");\r",
+									"    });\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:go-rest-api:token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_REST_URL}}/todos",
+							"host": [
+								"{{API_REST_URL}}"
+							],
+							"path": [
+								"todos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GraphQL",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "MUTATION CREATE USER",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"QUERY USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).data.to.be.an(\"array\");\r",
+											"    responseJSON.data.createUser.user.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response values have appropriate data types\", function() {\r",
+											"    var responseUser = pm.response.json().data.createUser.user;\r",
+											"    pm.expect(responseUser.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseUser.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json().data.createUser.user;\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"})\r",
+											"\r",
+											"let responseData = pm.response.json().data.createUser.user;\r",
+											"pm.environment.set(\"newUserId\", responseData.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation {\r\n        createUser(\r\n          input: {\r\n            name: \"{{newUserName}}\",\r\n            email: \"{{newUserEmail}}\",\r\n            gender: \"{{newUserGender}}\",\r\n            status: \"{{newUserStatus}}\"\r\n          }\r\n        ) {\r\n          user {\r\n            id\r\n            name\r\n            email\r\n            gender\r\n            status\r\n          }\r\n        }\r\n      }",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{API_GRAPHQL_URL}}",
+									"host": [
+										"{{API_GRAPHQL_URL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "QUERY USER",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"QUERY USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).data.to.be.an(\"array\");\r",
+											"    responseJSON.data.user.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response values have appropriate data types\", function() {\r",
+											"    var responseUser = pm.response.json().data.user;\r",
+											"    pm.expect(responseUser.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseUser.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json().data.user;\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\r\n  user(id: {{newUserId}}) {\r\n    id\r\n    name\r\n    email\r\n    gender\r\n    status\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{API_GRAPHQL_URL}}",
+									"host": [
+										"{{API_GRAPHQL_URL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MUTATION USER Update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"QUERY UPDATE USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).data.to.be.an(\"array\");\r",
+											"    responseJSON.data.user.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"QUERY UPDATE USER: Response values have appropriate data types\", function() {\r",
+											"    var responseUser = pm.response.json().data.updateUser.user;\r",
+											"    pm.expect(responseUser.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseUser.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"QUERY UPDATE USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json().data.updateUser.user;\r",
+											"    pm.expect(user.name).to.not.eql(pm.collectionVariables.get(\"newUserName\"));\r",
+											"    pm.expect(user.gender).to.not.eql(pm.collectionVariables.get(\"newUserGender\"));\r",
+											"    pm.expect(user.status).to.not.eql(pm.collectionVariables.get(\"newUserStatus\"));\r",
+											"\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"updatedUserName\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"updatedUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"updatedUserStatus\"));\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation {\r\n        updateUser(\r\n          input: {\r\n            id: {{newUserId}},\r\n            name: \"{{updatedUserName}}\"\r\n            gender: \"{{updatedUserGender}}\"\r\n            status: \"{{updatedUserStatus}}\"\r\n          }\r\n        ) {\r\n          user {\r\n            id\r\n            email\r\n            name\r\n            gender\r\n            status\r\n          }\r\n        }\r\n      }",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{API_GRAPHQL_URL}}",
+									"host": [
+										"{{API_GRAPHQL_URL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MUTATION USER Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"QUERY USER: Status OK and response content is JSON\"), function() {\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+											"}\r",
+											"\r",
+											"pm.test(\"MUTATION DELETE USER: Response body contain proper data\"), function() {\r",
+											"    var responseJSON = pm.response.json();\r",
+											"    pm.expect(responseJSON).data.to.be.an(\"array\");\r",
+											"    responseJSON.data.user.forEach((user) => {\r",
+											"        pm.expect(user).to.be.an(\"object\");\r",
+											"        pm.expect(user).to.have.property(\"id\");\r",
+											"        pm.expect(user).to.have.property(\"name\");\r",
+											"        pm.expect(user).to.have.property(\"email\");\r",
+											"        pm.expect(user).to.have.property(\"status\");\r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"pm.test(\"MUTATION DELETE USER: Response values have appropriate data types\", function() {\r",
+											"    var responseUser = pm.response.json().data.deleteUser.user;\r",
+											"    pm.expect(responseUser.id).to.be.a(\"number\");\r",
+											"    pm.expect(responseUser.name).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.email).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.gender).to.be.a(\"string\");\r",
+											"    pm.expect(responseUser.status).to.be.a(\"string\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"MUTATION DELETE USER: Response values have appropriate data values\", function() {\r",
+											"    var user = pm.response.json().data.deleteUser.user;\r",
+											"    pm.expect(user.name).to.eql(pm.collectionVariables.get(\"updatedUserName\"));\r",
+											"    pm.expect(user.email).to.eql(pm.collectionVariables.get(\"newUserEmail\"));\r",
+											"    pm.expect(user.gender).to.eql(pm.collectionVariables.get(\"updatedUserGender\"));\r",
+											"    pm.expect(user.status).to.eql(pm.collectionVariables.get(\"updatedUserStatus\"));\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation {\r\n      deleteUser(input: { id: {{newUserId}} }) {\r\n        user {\r\n          id\r\n          name\r\n          email\r\n          gender\r\n          status\r\n        }\r\n      }\r\n    }",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{API_GRAPHQL_URL}}",
+									"host": [
+										"{{API_GRAPHQL_URL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{vault:go-rest-api:token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "newUserName",
+			"value": "Test User",
+			"type": "string"
+		},
+		{
+			"key": "newUserEmail",
+			"value": "testuser@example.com",
+			"type": "string"
+		},
+		{
+			"key": "newUserGender",
+			"value": "male",
+			"type": "string"
+		},
+		{
+			"key": "newUserStatus",
+			"value": "active",
+			"type": "string"
+		},
+		{
+			"key": "updatedUserName",
+			"value": "Test User Updated",
+			"type": "string"
+		},
+		{
+			"key": "updatedUserEmail",
+			"value": "updated_testuser@example.com",
+			"type": "string"
+		},
+		{
+			"key": "updatedUserGender",
+			"value": "female",
+			"type": "string"
+		},
+		{
+			"key": "updatedUserStatus",
+			"value": "inactive",
+			"type": "string"
+		}
+	]
+}
